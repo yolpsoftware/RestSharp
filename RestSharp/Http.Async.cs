@@ -344,6 +344,10 @@ namespace RestSharp
 			AppendHeaders(webRequest);
 			AppendCookies(webRequest);
 
+#if WINDOWS_PHONE71
+            webRequest.Headers[HttpRequestHeader.AcceptEncoding] = "gzip";
+#endif
+
 			webRequest.Method = method;
 
 			// make sure Content-Length header is always sent since default is -1
