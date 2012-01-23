@@ -315,8 +315,22 @@ namespace RestSharp
 #endif
 				response.ContentType = webResponse.ContentType;
 				response.ContentLength = webResponse.ContentLength;
-				response.RawBytes = webResponse.GetResponseStream().ReadAsBytes();
-				//response.Content = GetString(response.RawBytes);
+
+#if WINDOWS_PHONE71
+                if (webResponse.Headers[HttpRequestHeader.ContentEncoding] == "gzip")
+                {
+                    var uncompressedResponse = new SharpGIS.GZipWebClient.GZipWebResponse(webResponse);
+                    response.RawBytes = uncompressedResponse.GetResponseStream().ReadAsBytes();
+                }
+                else
+                {
+                    response.RawBytes = webResponse.GetResponseStream().ReadAsBytes();
+                }
+#else
+                response.RawBytes = webResponse.GetResponseStream().ReadAsBytes();
+#endif
+
+                //response.Content = GetString(response.RawBytes);
 				response.StatusCode = webResponse.StatusCode;
 				response.StatusDescription = webResponse.StatusDescription;
 				response.ResponseUri = webResponse.ResponseUri;
