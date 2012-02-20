@@ -101,6 +101,13 @@ namespace RestSharp.Extensions
 
 			input = input.RemoveSurroundingQuotes();
 
+			long unix;
+			if (Int64.TryParse(input, out unix))
+			{
+				var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+				return epoch.AddSeconds(unix);
+			}
+
 			if (input.Contains("/Date("))
 			{
 				return ExtractDate(input, @"\\/Date\((-?\d+)(-|\+)?([0-9]{4})?\)\\/", culture);
@@ -308,32 +315,25 @@ namespace RestSharp.Extensions
 			if (String.IsNullOrEmpty(name))
 				yield break;
 
-			var actualName = name;
-			yield return actualName;
+			yield return name;
 
 			// try camel cased name
-			actualName = name.ToCamelCase(culture);
-			yield return actualName;
+			yield return name.ToCamelCase(culture);
 
 			// try lower cased name
-			actualName = name.ToLower(culture);
-			yield return actualName;
+			yield return name.ToLower(culture);
 
 			// try name with underscores
-			actualName = name.AddUnderscores();
-			yield return actualName;
+			yield return name.AddUnderscores();
 
 			// try name with underscores with lower case
-			actualName = name.AddUnderscores().ToLower(culture);
-			yield return actualName;
+			yield return name.AddUnderscores().ToLower(culture);
 
 			// try name with dashes
-			actualName = name.AddDashes();
-			yield return actualName;
+			yield return name.AddDashes();
 
 			// try name with dashes with lower case
-			actualName = name.AddDashes().ToLower(culture);
-			yield return actualName;
+			yield return name.AddDashes().ToLower(culture);
 		}
 	}
 }

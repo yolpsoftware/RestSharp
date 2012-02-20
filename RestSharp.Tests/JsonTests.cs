@@ -49,6 +49,12 @@ namespace RestSharp.Tests
 		public void Can_Deserialize_Lists_of_Simple_Types()
 		{
 			var doc = File.ReadAllText(Path.Combine("SampleData", "jsonlists.txt"));
+			var json = new JsonDeserializer ();
+
+			var output = json.Deserialize<JsonLists> (new RestResponse { Content = doc });
+
+			Assert.NotEmpty (output.Names);
+			Assert.NotEmpty (output.Numbers);
 		}
 
 		[Fact]
@@ -147,6 +153,23 @@ namespace RestSharp.Tests
 			var json = new JsonDeserializer();
 			var output = json.Deserialize<List<status>>(response);
 			Assert.Equal(4, output.Count);
+		}
+
+		[Fact]
+		public void Can_Deserialize_Various_Enum_Values ()
+		{
+			var data = File.ReadAllText (Path.Combine ("SampleData", "jsonenums.txt"));
+			var response = new RestResponse { Content = data };
+			var json = new JsonDeserializer ();
+			var output = json.Deserialize<JsonEnumsTestStructure>(response);
+
+			Assert.Equal (output.Upper, Disposition.Friendly);
+			Assert.Equal (output.Lower, Disposition.Friendly);
+			Assert.Equal (output.CamelCased, Disposition.SoSo);
+			Assert.Equal (output.Underscores, Disposition.SoSo);
+			Assert.Equal (output.LowerUnderscores, Disposition.SoSo);
+			Assert.Equal (output.Dashes, Disposition.SoSo);
+			Assert.Equal (output.LowerDashes, Disposition.SoSo);
 		}
 
 		[Fact]
@@ -310,6 +333,17 @@ namespace RestSharp.Tests
 			var bd = d.Deserialize<Birthdate>(response);
 
 			Assert.Equal(new DateTime(1910, 9, 25, 9, 30, 25, DateTimeKind.Utc), bd.Value);
+		}
+
+		[Fact]
+		public void Can_Deserialize_Unix_Json_Dates()
+		{
+			var doc = CreateUnixDateJson();
+			var d = new JsonDeserializer();
+			var response = new RestResponse { Content = doc };
+			var bd = d.Deserialize<Birthdate>(response);
+
+			Assert.Equal(new DateTime(2011, 6, 30, 8, 15, 46, DateTimeKind.Utc), bd.Value);
 		}
 
 		[Fact]
@@ -509,6 +543,14 @@ namespace RestSharp.Tests
 			bd.Value = new DateTime(1910, 9, 25, 9, 30, 25, DateTimeKind.Utc);
 
 			return JsonConvert.SerializeObject(bd, new JavaScriptDateTimeConverter());
+		}
+
+		private string CreateUnixDateJson()
+		{
+			var doc = new JObject();
+			doc["Value"] = 1309421746;
+
+			return doc.ToString();
 		}
 
 		private string CreateJson()
