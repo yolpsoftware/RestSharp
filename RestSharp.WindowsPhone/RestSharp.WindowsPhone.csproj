@@ -13,7 +13,7 @@
     <AssemblyName>RestSharp.WindowsPhone</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
-    <TargetFrameworkProfile>WindowsPhone</TargetFrameworkProfile>
+    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightApplication>false</SilverlightApplication>
     <ValidateXaml>true</ValidateXaml>
@@ -44,10 +44,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json, Version=4.0.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\sl3-wp\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
@@ -125,6 +121,33 @@
     </Compile>
     <Compile Include="..\restsharp\authenticators\SimpleAuthenticator.cs">
       <Link>Authenticators\SimpleAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\Crc32.cs">
+      <Link>Compression\ZLib\Crc32.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\FlushType.cs">
+      <Link>Compression\ZLib\FlushType.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\GZipStream.cs">
+      <Link>Compression\ZLib\GZipStream.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\Inflate.cs">
+      <Link>Compression\ZLib\Inflate.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\InfTree.cs">
+      <Link>Compression\ZLib\InfTree.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\ZLib.cs">
+      <Link>Compression\ZLib\ZLib.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\ZLibCodec.cs">
+      <Link>Compression\ZLib\ZLibCodec.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\ZLibConstants.cs">
+      <Link>Compression\ZLib\ZLibConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\ZLibStream.cs">
+      <Link>Compression\ZLib\ZLibStream.cs</Link>
     </Compile>
     <Compile Include="..\RestSharp\Deserializers\DeserializeAsAttribute.cs">
       <Link>Deserializers\DeserializeAsAttribute.cs</Link>
@@ -210,6 +233,9 @@
     <Compile Include="..\RestSharp\RestClient.cs">
       <Link>RestClient.cs</Link>
     </Compile>
+    <Compile Include="..\RestSharp\RestClientExtensions.cs">
+      <Link>RestClientExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\RestSharp\RestRequest.cs">
       <Link>RestRequest.cs</Link>
     </Compile>
@@ -222,9 +248,6 @@
     <Compile Include="..\restsharp\serializers\ISerializer.cs">
       <Link>Serializers\ISerializer.cs</Link>
     </Compile>
-    <Compile Include="..\restsharp\serializers\JsonSerializer.cs">
-      <Link>Serializers\JsonSerializer.cs</Link>
-    </Compile>
     <Compile Include="..\restsharp\serializers\SerializeAsAttribute.cs">
       <Link>Serializers\SerializeAsAttribute.cs</Link>
     </Compile>
@@ -233,6 +256,9 @@
     </Compile>
     <Compile Include="..\RestSharp\SharedAssemblyInfo.cs">
       <Link>SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\SimpleJson.cs">
+      <Link>SimpleJson.cs</Link>
     </Compile>
     <Compile Include="..\restsharp\validation\Require.cs">
       <Link>Validation\Require.cs</Link>

@@ -57,6 +57,9 @@
     <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\RestSharp.WindowsPhone\SimpleJson.cs">
+      <Link>SimpleJson.cs</Link>
+    </Compile>
     <Compile Include="..\restsharp\authenticators\HttpBasicAuthenticator.cs">
       <Link>Authenticators\HttpBasicAuthenticator.cs</Link>
     </Compile>
@@ -125,6 +128,33 @@
     </Compile>
     <Compile Include="..\restsharp\authenticators\SimpleAuthenticator.cs">
       <Link>Authenticators\SimpleAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\Crc32.cs">
+      <Link>Compression\ZLib\Crc32.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\FlushType.cs">
+      <Link>Compression\ZLib\FlushType.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\GZipStream.cs">
+      <Link>Compression\ZLib\GZipStream.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\Inflate.cs">
+      <Link>Compression\ZLib\Inflate.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\InfTree.cs">
+      <Link>Compression\ZLib\InfTree.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\ZLib.cs">
+      <Link>Compression\ZLib\ZLib.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\ZLibCodec.cs">
+      <Link>Compression\ZLib\ZLibCodec.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\ZLibConstants.cs">
+      <Link>Compression\ZLib\ZLibConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Compression\ZLib\ZLibStream.cs">
+      <Link>Compression\ZLib\ZLibStream.cs</Link>
     </Compile>
     <Compile Include="..\restsharp\deserializers\DeserializeAsAttribute.cs">
       <Link>Deserializers\DeserializeAsAttribute.cs</Link>
@@ -209,6 +239,9 @@
     </Compile>
     <Compile Include="..\RestSharp\RestClient.cs">
       <Link>RestClient.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\RestClientExtensions.cs">
+      <Link>RestClientExtensions.cs</Link>
     </Compile>
     <Compile Include="..\RestSharp\RestRequest.cs">
       <Link>RestRequest.cs</Link>
