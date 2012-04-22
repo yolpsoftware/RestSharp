@@ -23,7 +23,6 @@ using RestSharp.Extensions;
 using RestSharp.Serializers;
 
 #if NETFX_CORE
-using Newtonsoft.Json.Linq;
 using System.Reflection;
 using System.Reflection.RuntimeExtensions;
 using RestSharp.Reflection;
