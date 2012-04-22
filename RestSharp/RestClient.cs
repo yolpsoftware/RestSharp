@@ -21,7 +21,9 @@ using System.Linq;
 using System.Net;
 using System.Xml;
 using System.Xml.Linq;
+#if !NETFX_CORE
 using System.Security.Cryptography.X509Certificates;
+#endif
 using RestSharp.Deserializers;
 using RestSharp.Extensions;
 using System.Text;
@@ -57,10 +59,23 @@ namespace RestSharp
 			AddHandler("text/xml", new XmlDeserializer());
 			AddHandler("*", new XmlDeserializer());
 
-			// silverlight friendly way to get current version
-			var assembly = Assembly.GetExecutingAssembly();
-			AssemblyName assemblyName = new AssemblyName(assembly.FullName);
-			var version = assemblyName.Version;
+#if NETFX_CORE
+            var asmName = this.GetType().AssemblyQualifiedName;
+            var versionExpression = new System.Text.RegularExpressions.Regex("Version=(?<version>[0-9.]*)");
+            var m = versionExpression.Match(asmName);
+            string version = String.Empty;
+            if (m.Success)
+            {
+                version = m.Groups["version"].Value;
+            }
+           
+#else
+            // silverlight friendly way to get current version
+            var assembly = Assembly.GetExecutingAssembly();
+            AssemblyName assemblyName = new AssemblyName(assembly.FullName);
+            var version = assemblyName.Version;
+#endif
+
 
 			UserAgent = "RestSharp " + version.ToString();
 			FollowRedirects = true;
@@ -371,7 +386,7 @@ namespace RestSharp
 
 			http.Timeout = request.Timeout == 0 ? Timeout : request.Timeout;
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			http.FollowRedirects = FollowRedirects;
 #endif
 #if FRAMEWORK

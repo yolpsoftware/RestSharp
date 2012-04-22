@@ -16,7 +16,7 @@ namespace RestSharp.Authenticators.OAuth
 		{
 		}
 
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !NETFX_CORE
 		public WebParameterCollection(NameValueCollection collection) : base(collection)
 		{
 		}

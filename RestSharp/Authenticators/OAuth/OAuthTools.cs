@@ -1,12 +1,18 @@
 using System;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using RestSharp.Authenticators.OAuth.Extensions;
+#if NETFX_CORE
+using Windows.Security.Cryptography;
+using Windows.Security.Cryptography.Core;
+using Windows.Security.Cryptography.DataProtection;
+#else
+using System.Security.Cryptography;
+#endif
 
 namespace RestSharp.Authenticators.OAuth
 {
-#if !SILVERLIGHT && !WINDOWS_PHONE
+#if !SILVERLIGHT && !WINDOWS_PHONE && !NETFX_CORE
 	[Serializable]
 #endif
 	internal static class OAuthTools
@@ -20,13 +26,13 @@ namespace RestSharp.Authenticators.OAuth
 		private static readonly Random _random;
 		private static readonly object _randomLock = new object();
 
-#if !SILVERLIGHT && !WINDOWS_PHONE
+#if !SILVERLIGHT && !WINDOWS_PHONE && !NETFX_CORE
 		private static readonly RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 #endif
 
 		static OAuthTools()
 		{
-#if !SILVERLIGHT && !WINDOWS_PHONE
+#if !SILVERLIGHT && !WINDOWS_PHONE && !NETFX_CORE
 			var bytes = new byte[4];
 			_rng.GetNonZeroBytes(bytes);
 			_random = new Random(BitConverter.ToInt32(bytes, 0));
@@ -102,18 +108,24 @@ namespace RestSharp.Authenticators.OAuth
 		/// </summary>
 		/// <param name="value"></param>
 		/// <seealso cref="http://oauth.net/core/1.0#encoding_parameters" />
-		public static string UrlEncodeStrict(string value)
-		{
-			// [JD]: We need to escape the apostrophe as well or the signature will fail
-			var original = value;
-			var ret = original.Where(
-				c => !Unreserved.Contains(c) && c != '%').Aggregate(
-					value, (current, c) => current.Replace(
-						c.ToString(), c.ToString().PercentEncode()
-				));
+        public static string UrlEncodeStrict(string value)
+        {
 
-			return ret.Replace("%%", "%25%"); // Revisit to encode actual %'s
-		}
+#if NETFX_CORE
+            return Uri.EscapeUriString(value);
+#else
+            // [JD]: We need to escape the apostrophe as well or the signature will fail
+            var original = value;
+            var ret = original.Where(
+                c => !Unreserved.Contains(c) && c != '%').Aggregate(
+                    value, (current, c) => current.Replace(
+                        c.ToString(), c.ToString().PercentEncode()
+                ));
+
+            return ret.Replace("%%", "%25%"); // Revisit to encode actual %'s
+#endif
+        }
+
 
 		/// <summary>
 		/// Sorts a collection of key-value pairs by name, and then value if equal,
@@ -277,6 +289,9 @@ namespace RestSharp.Authenticators.OAuth
 			{
 				case OAuthSignatureMethod.HmacSha1:
 				{
+#if NETFX_CORE
+                    throw new NotImplementedException("What goes here?");
+#else
 					var crypto = new HMACSHA1();
 					var key = "{0}&{1}".FormatWith(consumerSecret, tokenSecret);
 
@@ -284,7 +299,8 @@ namespace RestSharp.Authenticators.OAuth
 					signature = signatureBase.HashWith(crypto);
 
 					break;
-				}
+#endif
+                }
 				default:
 					throw new NotImplementedException("Only HMAC-SHA1 is currently supported.");
 			}

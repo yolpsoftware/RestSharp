@@ -9,7 +9,7 @@ namespace RestSharp.Authenticators.OAuth
 #if !Smartphone
 	[DebuggerDisplay("{Name}:{Value}")]
 #endif
-#if !SILVERLIGHT && !WINDOWS_PHONE
+#if !SILVERLIGHT && !WINDOWS_PHONE && !NETFX_CORE
 	[Serializable]
 #endif
 	internal class WebParameter : WebPair

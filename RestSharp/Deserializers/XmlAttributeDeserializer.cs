@@ -94,7 +94,7 @@ namespace RestSharp.Deserializers
 			{
 				var type = prop.PropertyType;
 
-				if (!type.IsPublic || !prop.CanWrite)
+				if (!type.IsPublic() || !prop.CanWrite)
 					continue;
 
 				var name = prop.Name.AsNamespaced(Namespace);
@@ -112,7 +112,7 @@ namespace RestSharp.Deserializers
 				if (value == null)
 				{
 					// special case for inline list items
-					if (type.IsGenericType)
+					if (type.IsGenericType())
 					{
 						var genericType = type.GetGenericArguments()[0];
 
@@ -131,7 +131,7 @@ namespace RestSharp.Deserializers
 				}
 
 				// check for nullable and extract underlying type
-				if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+				if (type.IsGenericType() && type.GetGenericTypeDefinition() == typeof(Nullable<>))
 				{
 					type = type.GetGenericArguments()[0];
 
@@ -146,11 +146,11 @@ namespace RestSharp.Deserializers
 					var toConvert = value.ToString().ToLower();
 					prop.SetValue(x, XmlConvert.ToBoolean(toConvert), null);
 				}
-				else if (type.IsPrimitive)
+				else if (type.IsPrimitive())
 				{
 					prop.SetValue(x, value.ChangeType(type, Culture), null);
 				}
-				else if (type.IsEnum)
+				else if (type.IsEnum())
 				{
 					var converted = type.FindEnumValue(value.ToString(), Culture);
 					prop.SetValue(x, converted, null);
@@ -187,7 +187,7 @@ namespace RestSharp.Deserializers
 					value = new Guid(value.ToString());
 					prop.SetValue(x, value, null);
 				}
-				else if (type.IsGenericType)
+				else if (type.IsGenericType())
 				{
 					var t = type.GetGenericArguments()[0];
 					var list = (IList)Activator.CreateInstance(type);
@@ -234,7 +234,7 @@ namespace RestSharp.Deserializers
 
 		private object HandleListDerivative(object x, XElement root, string propName, Type type)
 		{
-			var t = type.BaseType.GetGenericArguments()[0];
+			var t = type.BaseType().GetGenericArguments()[0];
 
 			var name = t.Name;
 			//Gets the DeserialiseAs Attribute for the Class that the list uses

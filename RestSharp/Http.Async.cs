@@ -127,7 +127,7 @@ namespace RestSharp
 
 			if (HasBody || HasFiles)
 			{
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !NETFX_CORE
 				webRequest.ContentLength = CalculateContentLength();
 #endif
 				asyncResult = webRequest.BeginGetRequestStream(result => RequestStreamCallback(result, callback), webRequest);
@@ -275,7 +275,9 @@ namespace RestSharp
 			}
 
 			callback(raw);
+#if !NETFX_CORE
 			raw.Close();
+#endif
 		}
 
 		private void ResponseCallback(IAsyncResult result, Action<HttpResponse> callback)
@@ -347,7 +349,7 @@ namespace RestSharp
 			webRequest.Method = method;
 
 			// make sure Content-Length header is always sent since default is -1
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !NETFX_CORE
 			// WP7 doesn't as of Beta doesn't support a way to set this value either directly
 			// or indirectly
 			if(!HasFiles)
@@ -361,7 +363,7 @@ namespace RestSharp
 				webRequest.Credentials = Credentials;
 			}
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			if(UserAgent.HasValue())
 			{
 				webRequest.UserAgent = UserAgent;
@@ -393,7 +395,7 @@ namespace RestSharp
 			}
 #endif
 
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 			webRequest.AllowAutoRedirect = FollowRedirects;
 #endif
 			return webRequest;

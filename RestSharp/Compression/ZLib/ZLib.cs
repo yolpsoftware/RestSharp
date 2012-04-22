@@ -62,7 +62,7 @@
 //
 // -----------------------------------------------------------------------
 
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || NETFX_CORE
 
 using System;
 using Interop = System.Runtime.InteropServices;

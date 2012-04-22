@@ -20,11 +20,21 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Security.Cryptography.X509Certificates;
+#if NETFX_CORE
+using Windows.Security.Cryptography;
+using Windows.Security.Cryptography.Core;
+using Windows.Security.Cryptography.DataProtection;
+#else
+using System.Security.Cryptography;
+#endif
 using RestSharp.Extensions;
 
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || NETFX_CORE
 using RestSharp.Compression.ZLib;
+#endif
+
+#if FRAMEWORK
+using System.Security.Cryptography.X509Certificates;
 #endif
 
 namespace RestSharp
@@ -110,7 +120,7 @@ namespace RestSharp
 		/// Collection of files to be sent with request
 		/// </summary>
 		public IList<HttpFile> Files { get; private set; }
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		/// <summary>
 		/// Whether or not HTTP 3xx response redirects should be automatically followed
 		/// </summary>
@@ -120,6 +130,8 @@ namespace RestSharp
 		/// <summary>
 		/// X509CertificateCollection to be sent with request
 		/// </summary>
+        /// 
+        
 		public X509CertificateCollection ClientCertificates { get; set; }
 		/// <summary>
 		/// Maximum number of automatic redirects to follow if FollowRedirects is true
@@ -366,8 +378,9 @@ namespace RestSharp
 					var headerValue = webResponse.Headers[headerName];
 					response.Headers.Add(new HttpHeader { Name = headerName, Value = headerValue });
 				}
-
+#if !NETFX_CORE
 				webResponse.Close();
+#endif
 			}
 		}
 

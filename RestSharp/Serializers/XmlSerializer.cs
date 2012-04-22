@@ -20,6 +20,11 @@ using System.Linq;
 using System.Xml.Linq;
 using RestSharp.Extensions;
 
+#if NETFX_CORE
+using System.Reflection;
+using System.Reflection.RuntimeExtensions;
+#endif
+
 namespace RestSharp.Serializers
 {
 	/// <summary>
@@ -135,7 +140,12 @@ namespace RestSharp.Serializers
 				var nsName = name.AsNamespaced(Namespace);
 				var element = new XElement(nsName);
 
-				if (propType.IsPrimitive || propType.IsValueType || propType == typeof(string)) {
+#if NETFX_CORE
+                if (propType.GetTypeInfo().IsPrimitive || propType.GetTypeInfo().IsValueType || propType == typeof(string))
+#else
+                    if (propType.IsPrimitive || propType.IsValueType || propType == typeof(string)) 
+#endif
+                {
 					if (useAttribute) {
 						root.Add(new XAttribute(name, value));
 						continue;
