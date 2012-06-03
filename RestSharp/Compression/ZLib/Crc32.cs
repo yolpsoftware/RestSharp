@@ -32,7 +32,7 @@
 //
 // ------------------------------------------------------------------
 
-#if WINDOWS_PHONE
+#if (WINDOWS_PHONE || NETFX_CORE)
 
 using System;
 using Interop = System.Runtime.InteropServices;
@@ -450,9 +450,12 @@ namespace RestSharp.Compression.ZLib
 
         void IDisposable.Dispose()
         {
+#if !NETFX_CORE
             Close();
+#endif
         }
 
+#if !NETFX_CORE
         /// <summary>
         /// Closes the stream.
         /// </summary>
@@ -462,6 +465,7 @@ namespace RestSharp.Compression.ZLib
             if (!_leaveOpen)
                 _innerStream.Close();
         }
+#endif
 
     }
 }

@@ -4,7 +4,7 @@ using System.Text;
 using RestSharp.Authenticators.OAuth;
 using RestSharp.Authenticators.OAuth.Extensions;
 
-#if WINDOWS_PHONE
+#if WINDOWS_PHONE || NETFX_CORE
 using System.Net;
 #else
 using RestSharp.Contrib;
@@ -191,8 +191,12 @@ namespace RestSharp.Authenticators
 					request.AddHeader("Authorization", GetAuthorizationHeader(parameters));
 					break;
 				case OAuthParameterHandling.UrlOrPostParameters:
-					parameters.Add("oauth_signature", HttpUtility.UrlDecode(oauth.Signature));
-					foreach (var parameter in parameters)
+#if NETFX_CORE
+					parameters.Add("oauth_signature", Uri.EscapeUriString(oauth.Signature));
+#else
+                    parameters.Add("oauth_signature", HttpUtility.UrlDecode(oauth.Signature));
+#endif
+                    foreach (var parameter in parameters)
 					{
 						request.AddParameter(parameter.Name, parameter.Value);
 					}

@@ -18,8 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.IO;
+#if !NETFX_CORE
 using System.Security.Cryptography.X509Certificates;
-
+#endif
 namespace RestSharp
 {
 	public interface IHttp
@@ -28,7 +29,7 @@ namespace RestSharp
 		ICredentials Credentials { get; set; }
 		string UserAgent { get; set; }
 		int Timeout { get; set; }
-#if !SILVERLIGHT
+#if !SILVERLIGHT && !NETFX_CORE
 		bool FollowRedirects { get; set; }
 #endif
 #if FRAMEWORK

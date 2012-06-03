@@ -22,6 +22,13 @@ using System.Net;
 using RestSharp.Extensions;
 using RestSharp.Serializers;
 
+#if NETFX_CORE
+using System.Reflection;
+using System.Reflection.RuntimeExtensions;
+using RestSharp.Reflection;
+#else
+#endif
+
 namespace RestSharp
 {
 	/// <summary>
@@ -49,7 +56,7 @@ namespace RestSharp
 			Parameters = new List<Parameter>();
 			Files = new List<FileParameter>();
 			XmlSerializer = new XmlSerializer();
-			//JsonSerializer = new JsonSerializer();
+			JsonSerializer = new JsonSerializer();
 
 			OnBeforeDeserialization = r => { };
 		}
@@ -107,6 +114,7 @@ namespace RestSharp
 			//resource.PathAndQuery not supported by Silverlight :(
 		}
 
+#if !NETFX_CORE
 			/// <summary>
 			/// Adds a file to the Files collection to be included with a POST or PUT request 
 			/// (other methods do not support file uploads).
@@ -129,6 +137,7 @@ namespace RestSharp
 				}
 			});
 		}
+#endif
 
 		/// <summary>
 		/// Adds the bytes to the Files collection with the specified file name

@@ -34,7 +34,8 @@
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>Bin\Debug\RestSharp.Silverlight.xml</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -102,6 +103,9 @@
     </Compile>
     <Compile Include="..\RestSharp\Extensions\ReflectionExtensions.cs">
       <Link>Extensions\ReflectionExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Extensions\ResponseExtensions.cs">
+      <Link>Extensions\ResponseExtensions.cs</Link>
     </Compile>
     <Compile Include="..\RestSharp\Extensions\StringExtensions.cs">
       <Link>Extensions\StringExtensions.cs</Link>
@@ -174,6 +178,9 @@
     </Compile>
     <Compile Include="..\RestSharp\Serializers\ISerializer.cs">
       <Link>Serializers\ISerializer.cs</Link>
+    </Compile>
+    <Compile Include="..\RestSharp\Serializers\JsonSerializer.cs">
+      <Link>Serializers\JsonSerializer.cs</Link>
     </Compile>
     <Compile Include="..\RestSharp\Serializers\SerializeAsAttribute.cs">
       <Link>Serializers\SerializeAsAttribute.cs</Link>

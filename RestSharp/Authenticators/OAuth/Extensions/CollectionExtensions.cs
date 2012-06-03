@@ -55,7 +55,7 @@ namespace RestSharp.Authenticators.OAuth.Extensions
 			}
 		}
 
-#if !WINDOWS_PHONE
+#if !WINDOWS_PHONE && !NETFX_CORE
 
 		public static void AddRange(this IDictionary<string, string> collection, NameValueCollection range)
 		{

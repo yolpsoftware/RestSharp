@@ -40,7 +40,11 @@ namespace RestSharp.Extensions
 	{
 		public static string UrlDecode(this string input)
 		{
+#if NETFX_CORE
+            return Uri.UnescapeDataString(input);
+#else
 			return HttpUtility.UrlDecode(input);
+#endif
 		}
 
 		/// <summary>
@@ -49,18 +53,30 @@ namespace RestSharp.Extensions
 		/// </summary>
 		public static string UrlEncode(this string input)
 		{
-			return Uri.EscapeDataString(input);
+#if NETFX_CORE
+            return Uri.EscapeDataString(input);
+#else
+			return HttpUtility.HtmlEncode(input);
+#endif
 		}
 
 		public static string HtmlDecode(this string input)
 		{
+#if NETFX_CORE
+            return Uri.UnescapeDataString(input);
+#else
 			return HttpUtility.HtmlDecode(input);
+#endif
 		}
 
 		public static string HtmlEncode(this string input)
 		{
+#if NETFX_CORE
+            return Uri.EscapeUriString(input);
+#else
 			return HttpUtility.HtmlEncode(input);
-		}
+#endif
+        }
 
 #if FRAMEWORK
 		public static string HtmlAttributeEncode(this string input)
@@ -236,8 +252,11 @@ namespace RestSharp.Extensions
 
 						if (restOfWord.IsUpperCase())
 							restOfWord = restOfWord.ToLower(culture);
-
+#if NETFX_CORE
+                        char firstChar = word[0].ToString().ToUpper()[0];
+#else
 						char firstChar = char.ToUpper(word[0], culture);
+#endif
 						words[i] = String.Concat(firstChar, restOfWord);
 					}
 				}
@@ -304,7 +323,19 @@ namespace RestSharp.Extensions
 				"$1-$2"), @"[\s]", "-");
 		}
 
-		/// <summary>
+#if NETFX_CORE
+        public static string ToLower(this string s, CultureInfo culture)
+        {
+            return s.ToLower();
+        }
+
+        public static string ToUpper(this string s, CultureInfo culture)
+        {
+            return s.ToUpper();
+        }
+#endif
+
+        /// <summary>
 		/// Return possible variants of a name for name matching.
 		/// </summary>
 		/// <param name="name">String to convert</param>
